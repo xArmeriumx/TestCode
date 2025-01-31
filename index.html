@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .header {
+      background-color: #FF0000; /* สีแดง */
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 18px;
+    }
+    .container {
+      padding: 15px;
+      margin: 0 auto;
+      max-width: 500px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      margin-top: 20px;
+    }
+    .hidden {
+      display: none;
+    }
+    .button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 10px;
+      border: none;
+      background-color: #FF0000; /* สีแดง */
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    .branch-container, .calendar, .time-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    .branch, .date, .time {
+      flex: 1 0 30%;
+      margin: 10px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      text-align: center;
+      border-radius: 5px;
+      background-color: white;
+      cursor: pointer;
+    }
+    .branch.disabled, .date.disabled, .time.disabled {
+      background-color: #eee;
+      color: #aaa;
+      pointer-events: none;
+    }
+    .branch.selected, .date.selected, .time.selected {
+      background-color: #FF0000; /* สีแดง */
+      color: white;
+    }
+    .confirmation-container {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    .confirmation-item {
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    .terms {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #timerDisplay {
+      font-size: 20px;
+      text-align: center;
+      color: #FF0000; /* สีแดง */
+      margin-top: 20px;
+    }
+    @media (max-width: 768px) {
+      .branch, .date, .time {
+        flex: 1 0 45%;
+      }
+    }
+    @media (max-width: 480px) {
+      .branch, .date, .time {
+        flex: 1 0 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    Registration Booking System
+  </div>
+
+  <div class="container" id="mainPage">
+    <h2>Welcome to Booking System</h2>
+    <p id="countdownDisplay" style="font-size: 18px;">10</p>
+    <button id="registerButton" class="button" disabled>Register</button>
+  </div>
+
+  <div class="container hidden" id="branchSelection">
+    <h3>Select Branch</h3>
+    <div class="branch-container">
+      <div class="branch" onclick="selectBranch(this)">Terminal 21</div>
+      <div class="branch" onclick="selectBranch(this)">Central Ladprao</div>
+      <div class="branch" onclick="selectBranch(this)">Fashion Island</div>
+      <div class="branch" onclick="selectBranch(this)">Centralworld</div>
+      <div class="branch" onclick="selectBranch(this)">MEGABANGNA</div>
+      <div class="branch" onclick="selectBranch(this)">Siam Square</div>
+      <div class="branch disabled">Emsphere (Full)</div>
+      <div class="branch" onclick="selectBranch(this)">Central Pattaya</div>
+    </div>
+    <button id="nextButton" class="button hidden" onclick="goToCalendarStep()">Next</button>
+  </div>
+
+  <div class="container hidden" id="calendarSelection">
+    <h3>Select Date</h3>
+    <div class="calendar">
+      <div class="date disabled">1</div>
+      <div class="date disabled">2</div>
+      <div class="date disabled">3</div>
+      <div class="date disabled">4</div>
+      <div class="date disabled">5</div>
+      <div class="date disabled">6</div>
+      <div class="date disabled">7</div>
+      <div class="date disabled">8</div>
+      <div class="date disabled">9</div>
+      <div class="date disabled">10</div>
+      <div class="date disabled">11</div>
+      <div class="date disabled">12</div>
+      <div class="date disabled">13</div>
+      <div class="date disabled">14</div>
+      <div class="date disabled">15</div>
+      <div class="date disabled">16</div>
+      <div class="date disabled">17</div>
+      <div class="date disabled">18</div>
+      <div class="date disabled">19</div>
+      <div class="date disabled">20</div>
+      <div class="date disabled">21</div>
+      <div class="date disabled">22</div>
+      <div class="date disabled">23</div>
+      <div class="date" onclick="selectDate(this)">24</div>
+      <div class="date disabled">25</div>
+      <div class="date disabled">26</div>
+      <div class="date disabled">27</div>
+      <div class="date disabled">28</div>
+      <div class="date disabled">29</div>
+      <div class="date disabled">30</div>
+      <div class="date" onclick="selectDate(this)">31</div>
+    </div>
+    <div id="timeSelection" class="hidden">
+      <h3>Select Time</h3>
+      <div class="time-container" id="timeContainer"></div>
+      <button id="confirmButton" class="button hidden" onclick="showConfirmationPage()">Confirm</button>
+    </div>
+  </div>
+
+  <div class="container hidden" id="confirmationPage">
+    <h3>Confirmation</h3>
+    <div class="confirmation-container">
+      <div class="confirmation-item"><strong>Event:</strong> 23 Jan POP MART Store Registration</div>
+      <div class="confirmation-item"><strong>Full Name:</strong> Napat Pamornsut</div>
+      <div class="confirmation-item"><strong>Booking Time:</strong> <span id="selectedTime">2025-01-23 (14:00)</span></div>
+      <div class="confirmation-item"><strong>Branch:</strong> <span id="selectedBranch">Siam Square</span></div>
+    </div>
+    <div class="terms">
+      <input type="checkbox" id="termsCheckbox" onchange="toggleCloudflareCheck()"> I agree to the <a href="#">terms & conditions</a>
+    </div>
+    <div id="cloudflareCheck" class="hidden">
+      <p>Verifying...</p>
+      <button id="finalSubmitButton" class="button hidden" onclick="submitBooking()">Confirm Booking</button>
+    </div>
+  </div>
+
+  <div id="timerDisplay" class="hidden">Time Elapsed: 0s</div>
+
+  <script>
+    let startTime;
+
+    const countdownTimer = (seconds, displayElement, callback) => {
+      let timeRemaining = seconds;
+      const interval = setInterval(() => {
+        displayElement.textContent = `${timeRemaining}s`;
+        timeRemaining--;
+        if (timeRemaining < 0) {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, 1000);
+    };
+
+    const selectBranch = (element) => {
+      document.querySelectorAll('.branch').forEach(branch => {
+        branch.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      document.getElementById('nextButton').classList.remove('hidden');
+      document.getElementById('selectedBranch').textContent = element.textContent;
+    };
+
+    const goToCalendarStep = () => {
+      document.getElementById('branchSelection').classList.add('hidden');
+      document.getElementById('calendarSelection').classList.remove('hidden');
+    };
+
+    const selectDate = (element) => {
+      document.querySelectorAll('.date').forEach(date => {
+        date.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      const timeContainer = document.getElementById('timeContainer');
+      timeContainer.innerHTML = '';
+
+      const startTime = 10.5; // 10:30 in hours
+      const endTime = 19; // 19:00 in hours
+
+      for (let time = startTime; time <= endTime; time += 0.5) {
+        const hour = Math.floor(time);
+        const minute = time % 1 === 0 ? '00' : '30';
+        const timeElement = document.createElement('div');
+        timeElement.className = 'time';
+        timeElement.textContent = `${hour}:${minute}`;
+        timeElement.onclick = () => selectTime(timeElement);
+        timeContainer.appendChild(timeElement);
+      }
+
+      document.getElementById('timeSelection').classList.remove('hidden');
+    };
+
+    const selectTime = (element) => {
+      document.querySelectorAll('.time').forEach(time => {
+        time.classList.remove('selected');
+      });
+      element.classList.add('selected');
+      document.getElementById('selectedTime').textContent = element.textContent;
+      document.getElementById('confirmButton').classList.remove('hidden');
+    };
+
+    const showConfirmationPage = () => {
+      document.getElementById('calendarSelection').classList.add('hidden');
+      document.getElementById('confirmationPage').classList.remove('hidden');
+    };
+
+    const toggleCloudflareCheck = () => {
+      const termsCheckbox = document.getElementById('termsCheckbox');
+      const cloudflareCheck = document.getElementById('cloudflareCheck');
+      if (termsCheckbox.checked) {
+        cloudflareCheck.classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('finalSubmitButton').classList.remove('hidden');
+        }, 2000); // Simulate Cloudflare verification
+      } else {
+        cloudflareCheck.classList.add('hidden');
+        document.getElementById('finalSubmitButton').classList.add('hidden');
+      }
+    };
+
+    const submitBooking = () => {
+      const endTime = new Date();
+      const timeElapsed = Math.floor((endTime - startTime) / 1000);
+      document.getElementById('timerDisplay').textContent = `Time Elapsed: ${timeElapsed}s`;
+      alert('Booking Successful!');
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const registerButton = document.getElementById("registerButton");
+      const countdownDisplay = document.getElementById("countdownDisplay");
+
+      countdownTimer(10, countdownDisplay, () => {
+        registerButton.disabled = false;
+        registerButton.classList.remove("disabled");
+      });
+
+      registerButton.addEventListener("click", () => {
+        startTime = new Date();
+        document.querySelector(".container").classList.add("hidden");
+        document.getElementById("branchSelection").classList.remove("hidden");
+        document.getElementById("timerDisplay").classList.remove("hidden");
+      });
+    });
+  </script>
+</body>
+</html>
