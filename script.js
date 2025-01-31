@@ -1,23 +1,26 @@
 document.getElementById("start-btn").addEventListener("click", async () => {
     alert("🚀 Auto Booking Started!");
 
-    // ดึงค่า hostname และตัด "www." ออก (ถ้ามี)
-    const hostname = window.location.hostname.replace(/^www\./, "");
+    // ดึงค่า hostname และ pathname
+    const hostname = window.location.hostname.replace(/^www\./, ""); // ลบ www ออก (ถ้ามี)
+    const pathname = window.location.pathname; // ดึง path เช่น "/booking"
+    
     console.log("🌍 Current hostname:", hostname);
+    console.log("📂 Current pathname:", pathname);
 
     // ถ้าอยู่บน GitHub Pages → ให้เปลี่ยนหน้าไปเว็บ Booking
     if (hostname.includes("xarmeriumx.github.io")) {
         console.log("🔄 [1] อยู่บน GitHub Pages → กำลังเปลี่ยนหน้าไปยัง PopMart Booking...");
         alert("🔄 กำลังเปิดหน้า Booking...");
         localStorage.setItem("auto-booking-start", "true"); // บันทึกค่าไว้ว่าให้เริ่มทำงาน
-        window.location.href = "https://popmartth.rocket-booking.app";
+        window.location.href = "https://popmartth.rocket-booking.app/booking";
         return;
     }
 
-    // ถ้าอยู่บนเว็บ Booking และเคยเปิดจาก GitHub Pages → เริ่มจอง
-    if (hostname.includes("popmartth.rocket-booking.app")) {
+    // ถ้าอยู่บนเว็บ Booking (`/booking`) และเคยเปิดจาก GitHub Pages → เริ่มจอง
+    if (hostname.includes("popmartth.rocket-booking.app") && pathname.includes("/booking")) {
         if (localStorage.getItem("auto-booking-start") === "true") {
-            console.log("✅ [2] อยู่บนเว็บ PopMart → เริ่มกระบวนการจอง...");
+            console.log("✅ [2] อยู่บนหน้า /booking → เริ่มกระบวนการจอง...");
             localStorage.removeItem("auto-booking-start"); // ลบค่าที่บันทึกไว้
 
             // รอ 2 วินาทีเพื่อให้หน้าเว็บโหลดก่อนทำงาน
@@ -50,7 +53,7 @@ document.getElementById("start-btn").addEventListener("click", async () => {
             }, 2000); // รอ 2 วินาทีเพื่อให้หน้าเว็บโหลดก่อน
         }
     } else {
-        console.warn("🚨 [ERROR] Website Not Allowed:", hostname);
+        console.warn("🚨 [ERROR] Website Not Allowed:", hostname, pathname);
         alert("⛔ กรุณาเปิดเว็บที่รองรับการจองก่อน");
     }
 });
