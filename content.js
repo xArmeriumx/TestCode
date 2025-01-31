@@ -36,7 +36,7 @@ const waitForClickableElement = (selector, text) => {
 // เริ่มกระบวนการจอง
 (async () => {
   console.log("🚀 เริ่ม Auto Booking...");
-  await findAndClickElement("Register", 'button');
+  await findAndClickElement("Connect", 'button');
   await findAndClickElement("Siam Square", 'div');
   await findAndClickElement("Next", 'button');
   await findAndClickElement("7", 'div');
