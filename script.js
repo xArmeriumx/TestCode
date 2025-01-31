@@ -1,22 +1,36 @@
 document.getElementById("start-btn").addEventListener("click", async () => {
     alert("Auto Booking Started!");
 
-    if (window.location.hostname.includes("popmartth.rocket-booking.app")) {
+    // ดึงค่า hostname และตัด "www." ออก (ถ้ามี)
+    const hostname = window.location.hostname.replace(/^www\./, "");
+    console.log("🌍 Current hostname:", hostname);
+
+    // ตรวจสอบว่าเว็บที่เปิดตรงกับโดเมนที่รองรับหรือไม่
+    if (hostname.includes("popmartth.rocket-booking.app")) {
         console.log("✅ กำลังจองใน PopMart Booking...");
 
-        await findAndClickElement("Siam Square", 'div, span, td, li, th, label');
-        await findAndClickElement("Next", 'button, a');
-        await findAndClickElement("7", 'div, span, td, li, th, label, input, button, a');
-        await findAndClickElement("13:30", 'div, span, td, li, th, label, input, button, a');
-        await findAndClickElement("Confirm", 'button, a');
-        await findAndClickElement("Confirm Booking", 'button, a');
+        try {
+            await findAndClickElement("Siam Square", 'div, span, td, li, th, label');
+            await findAndClickElement("Next", 'button, a');
+            await findAndClickElement("7", 'div, span, td, li, th, label, input, button, a');
+            await findAndClickElement("13:30", 'div, span, td, li, th, label, input, button, a');
+            await findAndClickElement("Confirm", 'button, a');
+            await findAndClickElement("Confirm Booking", 'button, a');
 
-        console.log("🎉 การจองเสร็จสิ้น!");
+            console.log("🎉 การจองเสร็จสิ้น!");
+            alert("🎉 การจองเสร็จสิ้น!");
+        } catch (error) {
+            console.error("🚨 เกิดข้อผิดพลาดระหว่างการจอง:", error);
+            alert("⚠️ มีปัญหาระหว่างการจอง โปรดลองใหม่!");
+        }
+
     } else {
+        console.warn("🚨 Website Not Allowed:", hostname);
         alert("⛔ กรุณาเปิดเว็บที่รองรับการจองก่อน");
     }
 });
 
+// ฟังก์ชันช่วยค้นหาและคลิกปุ่มอัตโนมัติ
 const findAndClickElement = async (text, selector = 'button, a, div, span, td, li, th, label, input') => {
     console.log(`🔍 กำลังค้นหา: "${text}"`);
     
@@ -25,12 +39,13 @@ const findAndClickElement = async (text, selector = 'button, a, div, span, td, l
         element.click();
         console.log(`✅ คลิกสำเร็จ: "${text}"`);
     } else {
-        console.warn(`⚠️ ไม่พบปุ่มที่ต้องการ: "${text}"`);
+        throw new Error(`⚠️ ไม่พบปุ่ม: "${text}"`);
     }
 };
 
+// ฟังก์ชันรอจนกว่าจะพบปุ่มที่สามารถกดได้
 const waitForClickableElement = (selector, text) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const checkElement = () => {
             const elements = Array.from(document.querySelectorAll(selector));
             return elements.find(el => el.textContent.trim() === text && !el.disabled);
@@ -48,5 +63,11 @@ const waitForClickableElement = (selector, text) => {
         });
 
         observer.observe(document.body, { childList: true, subtree: true });
+
+        // ตั้ง Timeout ให้หยุดค้นหาหลัง 10 วินาที (กัน Loop ค้าง)
+        setTimeout(() => {
+            observer.disconnect();
+            reject(new Error(`⏳ Timeout: ไม่พบปุ่ม "${text}" ภายใน 10 วินาที`));
+        }, 10000);
     });
 };
