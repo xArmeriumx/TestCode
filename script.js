@@ -1,16 +1,24 @@
 document.getElementById("start-btn").addEventListener("click", async () => {
-    alert("Auto Booking Started!");
+    alert("🚀 Auto Booking Started!");
 
     // ดึงค่า hostname และตัด "www." ออก (ถ้ามี)
     const hostname = window.location.hostname.replace(/^www\./, "");
     console.log("🌍 Current hostname:", hostname);
 
-    // ตรวจสอบว่าเว็บที่เปิดตรงกับโดเมนที่รองรับหรือไม่
+    // ถ้าอยู่บน GitHub Pages → ให้เปลี่ยนหน้าไปเว็บ Booking
+    if (hostname.includes("xarmeriumx.github.io")) {
+        console.log("🔄 กำลังเปลี่ยนหน้าไปยัง PopMart Booking...");
+        alert("🔄 กำลังเปิดหน้า Booking...");
+        window.location.href = "https://popmartth.rocket-booking.app";
+        return;
+    }
+
+    // ถ้าอยู่บนเว็บ Booking → เริ่มกระบวนการจอง
     if (hostname.includes("popmartth.rocket-booking.app")) {
         console.log("✅ กำลังจองใน PopMart Booking...");
 
         try {
-            await findAndClickElement("Siam Square", 'div, span, td, li, th, label');
+            await findAndClickElement("Used", 'div, span, td, li, th, label');
             await findAndClickElement("Next", 'button, a');
             await findAndClickElement("7", 'div, span, td, li, th, label, input, button, a');
             await findAndClickElement("13:30", 'div, span, td, li, th, label, input, button, a');
