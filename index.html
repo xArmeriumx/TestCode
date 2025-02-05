@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registration Booking</title>
   <style>
     body {
@@ -168,12 +168,12 @@
         <td class="date disabled">4</td>
         <td class="date disabled">5</td>
         <td class="date disabled">6</td>
-        <!-- วันที่ 7 มี id="date7" และจะเปิดใช้งานหลังจาก 2 วินาที -->
+        <!-- วันที่ 7 จะถูก disable ตั้งแต่แรกและเปิดใช้งานหลังจาก 2 วินาที -->
         <td class="date disabled" id="date7">7</td>
       </tr>
       <tr>
-        <!-- วันที่ 8 มี id="date8" และจะเปิดใช้งานหลังจาก 2 วินาที -->
-        <td class="date disabled" id="date8">8</td>
+        <!-- วันที่ 8 เปิดใช้งานแบบปกติ (ไม่มีการใช้ class disabled) -->
+        <td class="date" id="date8" onclick="selectDate(this)">8</td>
         <td class="date disabled">9</td>
         <td class="date disabled">10</td>
         <td class="date disabled">11</td>
@@ -225,7 +225,7 @@
       <div class="confirmation-item"><strong>Branch:</strong> <span id="selectedBranch">Siam Square</span></div>
     </div>
     <div class="terms">
-      <input type="checkbox" id="termsCheckbox" onchange="toggleCloudflareCheck()"> I agree to the <a href="#">terms & conditions</a>
+      <input type="checkbox" id="termsCheckbox" onchange="toggleCloudflareCheck()" /> I agree to the <a href="#">terms & conditions</a>
     </div>
     <div id="cloudflareCheck" class="hidden">
       <p>Verifying...</p>
@@ -251,7 +251,7 @@
     };
 
     const selectBranch = (element) => {
-      document.querySelectorAll('.branch').forEach(branch => {
+      document.querySelectorAll('.branch').forEach((branch) => {
         branch.classList.remove('selected');
       });
       element.classList.add('selected');
@@ -259,31 +259,25 @@
       document.getElementById('selectedBranch').textContent = element.textContent;
     };
 
-    // เมื่อกด Next ให้เปลี่ยนไปที่หน้าปฏิทิน และ disable วันที่ 7 กับ 8 เป็นเวลา 2 วินาที
+    // เมื่อกด Next ให้เปลี่ยนไปที่หน้าปฏิทิน
+    // วันที่ 7 จะถูก disable ไว้และเปิดหลังจาก 2 วินาที
     const goToCalendarStep = () => {
       document.getElementById('branchSelection').classList.add('hidden');
       document.getElementById('calendarSelection').classList.remove('hidden');
 
-      // กำหนดให้วันที่ 7 และ 8เป็น disabled เมื่อเข้ามาหน้าปฏิทิน
       const date7 = document.getElementById('date7');
-      const date8 = document.getElementById('date8');
       date7.classList.add('disabled');
-      date8.classList.add('disabled');
       date7.removeAttribute('onclick');
-      date8.removeAttribute('onclick');
 
-      // เปิดใช้งาน (re-enable) หลังจาก 2 วินาที
       setTimeout(() => {
         date7.classList.remove('disabled');
-        date8.classList.remove('disabled');
         date7.setAttribute('onclick', 'selectDate(this)');
-        date8.setAttribute('onclick', 'selectDate(this)');
       }, 2000);
     };
 
     // ฟังก์ชันสำหรับเลือกวันที่
     const selectDate = (element) => {
-      document.querySelectorAll('.date').forEach(date => {
+      document.querySelectorAll('.date').forEach((date) => {
         date.classList.remove('selected');
       });
       element.classList.add('selected');
@@ -307,7 +301,7 @@
     };
 
     const selectTime = (element) => {
-      document.querySelectorAll('.time').forEach(time => {
+      document.querySelectorAll('.time').forEach((time) => {
         time.classList.remove('selected');
       });
       element.classList.add('selected');
@@ -341,20 +335,20 @@
       alert('Booking Successful!');
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const registerButton = document.getElementById("registerButton");
-      const countdownDisplay = document.getElementById("countdownDisplay");
+    document.addEventListener('DOMContentLoaded', () => {
+      const registerButton = document.getElementById('registerButton');
+      const countdownDisplay = document.getElementById('countdownDisplay');
 
       countdownTimer(10, countdownDisplay, () => {
         registerButton.disabled = false;
-        registerButton.classList.remove("disabled");
+        registerButton.classList.remove('disabled');
       });
 
-      registerButton.addEventListener("click", () => {
+      registerButton.addEventListener('click', () => {
         startTime = new Date();
-        document.querySelector(".container").classList.add("hidden");
-        document.getElementById("branchSelection").classList.remove("hidden");
-        document.getElementById("timerDisplay").classList.remove("hidden");
+        document.querySelector('.container').classList.add('hidden');
+        document.getElementById('branchSelection').classList.remove('hidden');
+        document.getElementById('timerDisplay').classList.remove('hidden');
       });
     });
   </script>
