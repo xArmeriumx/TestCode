@@ -45,12 +45,12 @@
       background-color: #aaa;
       cursor: not-allowed;
     }
-    .branch-container, .calendar, .time-container {
+    .branch-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
     }
-    .branch, .date, .time {
+    .branch, .time {
       flex: 1 0 30%;
       margin: 10px;
       padding: 15px;
@@ -60,14 +60,43 @@
       background-color: white;
       cursor: pointer;
     }
-    .branch.disabled, .date.disabled, .time.disabled {
+    .branch.disabled, .time.disabled {
       background-color: #eee;
       color: #aaa;
       pointer-events: none;
     }
-    .branch.selected, .date.selected, .time.selected {
+    .branch.selected, .time.selected {
       background-color: #FF0000; /* สีแดง */
       color: white;
+    }
+    /* ปรับสไตล์ของปฏิทินที่ใช้ table */
+    table.calendar {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table.calendar td {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: white;
+      cursor: pointer;
+    }
+    table.calendar td.disabled {
+      background-color: #eee;
+      color: #aaa;
+      pointer-events: none;
+    }
+    table.calendar td.selected {
+      background-color: #FF0000; /* สีแดง */
+      color: white;
+    }
+    .time-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 20px;
     }
     .confirmation-container {
       margin-top: 20px;
@@ -91,12 +120,12 @@
       margin-top: 20px;
     }
     @media (max-width: 768px) {
-      .branch, .date, .time {
+      .branch, .time {
         flex: 1 0 45%;
       }
     }
     @media (max-width: 480px) {
-      .branch, .date, .time {
+      .branch, .time {
         flex: 1 0 100%;
       }
     }
@@ -130,39 +159,56 @@
 
   <div class="container hidden" id="calendarSelection">
     <h3>Select Date</h3>
-    <div class="calendar">
-      <div class="date disabled">1</div>
-      <div class="date disabled">2</div>
-      <div class="date disabled">3</div>
-      <div class="date disabled">4</div>
-      <div class="date disabled">5</div>
-      <div class="date disabled">6</div>
-      <div class="date disabled">7</div>
-      <div class="date disabled">8</div>
-      <div class="date disabled">9</div>
-      <div class="date disabled">10</div>
-      <div class="date disabled">11</div>
-      <div class="date disabled">12</div>
-      <div class="date disabled">13</div>
-      <div class="date disabled">14</div>
-      <div class="date disabled">15</div>
-      <div class="date disabled">16</div>
-      <div class="date disabled">17</div>
-      <div class="date disabled">18</div>
-      <div class="date disabled">19</div>
-      <div class="date disabled">20</div>
-      <div class="date disabled">21</div>
-      <div class="date disabled">22</div>
-      <div class="date disabled">23</div>
-      <div class="date" onclick="selectDate(this)">24</div>
-      <div class="date disabled">25</div>
-      <div class="date disabled">26</div>
-      <div class="date disabled">27</div>
-      <div class="date disabled">28</div>
-      <div class="date disabled">29</div>
-      <div class="date disabled">30</div>
-      <div class="date" onclick="selectDate(this)">31</div>
-    </div>
+    <!-- ปฏิทินเปลี่ยนเป็น table -->
+    <table class="calendar">
+      <tr>
+        <td class="date disabled">1</td>
+        <td class="date disabled">2</td>
+        <td class="date disabled">3</td>
+        <td class="date disabled">4</td>
+        <td class="date disabled">5</td>
+        <td class="date disabled">6</td>
+        <!-- วันที่ 7 มี id="date7" และจะเปิดใช้งานหลังจาก 2 วินาที -->
+        <td class="date disabled" id="date7">7</td>
+      </tr>
+      <tr>
+        <!-- วันที่ 8 มี id="date8" และจะเปิดใช้งานหลังจาก 2 วินาที -->
+        <td class="date disabled" id="date8">8</td>
+        <td class="date disabled">9</td>
+        <td class="date disabled">10</td>
+        <td class="date disabled">11</td>
+        <td class="date disabled">12</td>
+        <td class="date disabled">13</td>
+        <td class="date disabled">14</td>
+      </tr>
+      <tr>
+        <td class="date disabled">15</td>
+        <td class="date disabled">16</td>
+        <td class="date disabled">17</td>
+        <td class="date disabled">18</td>
+        <td class="date disabled">19</td>
+        <td class="date disabled">20</td>
+        <td class="date disabled">21</td>
+      </tr>
+      <tr>
+        <td class="date disabled">22</td>
+        <td class="date disabled">23</td>
+        <td class="date disabled">24</td>
+        <td class="date disabled">25</td>
+        <td class="date disabled">26</td>
+        <td class="date disabled">27</td>
+        <td class="date disabled">28</td>
+      </tr>
+      <tr>
+        <td class="date disabled">29</td>
+        <td class="date disabled">30</td>
+        <td class="date disabled">31</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
     <div id="timeSelection" class="hidden">
       <h3>Select Time</h3>
       <div class="time-container" id="timeContainer"></div>
@@ -213,11 +259,29 @@
       document.getElementById('selectedBranch').textContent = element.textContent;
     };
 
+    // เมื่อกด Next ให้เปลี่ยนไปที่หน้าปฏิทิน และ disable วันที่ 7 กับ 8 เป็นเวลา 2 วินาที
     const goToCalendarStep = () => {
       document.getElementById('branchSelection').classList.add('hidden');
       document.getElementById('calendarSelection').classList.remove('hidden');
+
+      // กำหนดให้วันที่ 7 และ 8เป็น disabled เมื่อเข้ามาหน้าปฏิทิน
+      const date7 = document.getElementById('date7');
+      const date8 = document.getElementById('date8');
+      date7.classList.add('disabled');
+      date8.classList.add('disabled');
+      date7.removeAttribute('onclick');
+      date8.removeAttribute('onclick');
+
+      // เปิดใช้งาน (re-enable) หลังจาก 2 วินาที
+      setTimeout(() => {
+        date7.classList.remove('disabled');
+        date8.classList.remove('disabled');
+        date7.setAttribute('onclick', 'selectDate(this)');
+        date8.setAttribute('onclick', 'selectDate(this)');
+      }, 2000);
     };
 
+    // ฟังก์ชันสำหรับเลือกวันที่
     const selectDate = (element) => {
       document.querySelectorAll('.date').forEach(date => {
         date.classList.remove('selected');
@@ -226,10 +290,10 @@
       const timeContainer = document.getElementById('timeContainer');
       timeContainer.innerHTML = '';
 
-      const startTime = 10.5; // 10:30 in hours
+      const startTimeVal = 10.5; // 10:30 in hours
       const endTime = 19; // 19:00 in hours
 
-      for (let time = startTime; time <= endTime; time += 0.5) {
+      for (let time = startTimeVal; time <= endTime; time += 0.5) {
         const hour = Math.floor(time);
         const minute = time % 1 === 0 ? '00' : '30';
         const timeElement = document.createElement('div');
@@ -263,7 +327,7 @@
         cloudflareCheck.classList.remove('hidden');
         setTimeout(() => {
           document.getElementById('finalSubmitButton').classList.remove('hidden');
-        }, 2000); // Simulate Cloudflare verification
+        }, 2000); // จำลองการตรวจสอบ Cloudflare
       } else {
         cloudflareCheck.classList.add('hidden');
         document.getElementById('finalSubmitButton').classList.add('hidden');
@@ -271,8 +335,8 @@
     };
 
     const submitBooking = () => {
-      const endTime = new Date();
-      const timeElapsed = Math.floor((endTime - startTime) / 1000);
+      const endTimeVal = new Date();
+      const timeElapsed = Math.floor((endTimeVal - startTime) / 1000);
       document.getElementById('timerDisplay').textContent = `Time Elapsed: ${timeElapsed}s`;
       alert('Booking Successful!');
     };
