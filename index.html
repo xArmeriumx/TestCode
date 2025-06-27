@@ -165,55 +165,55 @@
   <div class="container hidden" id="calendarSelection">
     <h3>Select Date</h3>
     <!-- ปฏิทินเปลี่ยนเป็น table -->
-    <table class="calendar">
-  <tr>
-    <td class="date disabled">1</td>
-    <td class="date disabled">2</td>
-    <td class="date disabled">3</td>
-    <td class="date disabled" id="date4" onclick="selectDate(this)">4</td>
-    <td class="date disabled">5</td>
-    <td class="date disabled" id="date6" onclick="selectDate(this)">6</td>
-    <!-- วันที่ 7 จะถูก disable ตั้งแต่แรก -->
-    <td class="date disabled" id="date7" onclick="selectDate(this)">7</td>
-  </tr>
-  <tr>
-    <!-- วันที่ 8 เท่านั้นที่ enable -->
-    <td class="date" id="date8" onclick="selectDate(this)">8</td>
-    <td class="date disabled">9</td>
-    <td class="date disabled">10</td>
-    <td class="date disabled">11</td>
-    <td class="date disabled">12</td>
-    <td class="date disabled" onclick="selectDate(this)">13</td>
-    <td class="date disabled" onclick="selectDate(this)">14</td>
-  </tr>
-  <tr>
-    <td class="date disabled">15</td>
-    <td class="date disabled" onclick="selectDate(this)">16</td>
-    <td class="date disabled">17</td>
-    <td class="date disabled" onclick="selectDate(this)">18</td>
-    <td class="date disabled">19</td>
-    <td class="date disabled" onclick="selectDate(this)">20</td>
-    <td class="date disabled" onclick="selectDate(this)">21</td>
-  </tr>
-  <tr>
-    <td class="date disabled" onclick="selectDate(this)">22</td>
-    <td class="date disabled" onclick="selectDate(this)">23</td>
-    <td class="date disabled" onclick="selectDate(this)">24</td>
-    <td class="date disabled" onclick="selectDate(this)">25</td>
-    <td class="date disabled" onclick="selectDate(this)">26</td>
-    <td class="date disabled" onclick="selectDate(this)">27</td>
-    <td class="date disabled" onclick="selectDate(this)">28</td>
-  </tr>
-  <tr>
-    <td class="date disabled" onclick="selectDate(this)">29</td>
-    <td class="date disabled" onclick="selectDate(this)">30</td>
-    <td class="date disabled" onclick="selectDate(this)">31</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-</table>
+   <table class="calendar">
+      <tr>
+        <td class="date disabled">1</td>
+        <td class="date disabled">2</td>
+        <td class="date disabled">3</td>
+        <td class="date" id="date8" onclick="selectDate(this)">4</td>
+        <td class="date disabled">5</td>
+        <td class="date" id="date8" onclick="selectDate(this)">6</td>
+        <!-- วันที่ 7 จะถูก disable ตั้งแต่แรกและเปิดใช้งานหลังจาก 2 วินาที -->
+        <td class="date" id="date8" onclick="selectDate(this)">7</td>
+      </tr>
+      <tr>
+        <!-- วันที่ 8 เปิดใช้งานแบบปกติ (ไม่มีการใช้ class disabled) -->
+        <td class="date" id="date8" onclick="selectDate(this)">8</td>
+        <td class="date disabled">9</td>
+        <td class="date disabled">10</td>
+        <td class="date disabled">11</td>
+        <td class="date disabled">12</td>
+        <td class="date" onclick="selectDate(this)">13</td>
+        <td class="date" onclick="selectDate(this)">14</td>
+      </tr>
+      <tr>
+        <td class="date disabled">15</td>
+        <td class="date" onclick="selectDate(this)">16</td>
+        <td class="date disabled">17</td>
+        <td class="date" onclick="selectDate(this)">18</td>
+        <td class="date disabled">19</td>
+        <td class="date" onclick="selectDate(this)">20</td>
+        <td class="date" onclick="selectDate(this)">21</td>
+      </tr>
+      <tr>
+       <td class="date" onclick="selectDate(this)">22</td>
+        <td class="date" onclick="selectDate(this)">23</td>
+        <td class="date" onclick="selectDate(this)">24</td>
+        <td class="date" onclick="selectDate(this)">25</td>
+        <td class="date" onclick="selectDate(this)">26</td>
+        <td class="date" onclick="selectDate(this)">27</td>
+        <td class="date" onclick="selectDate(this)">28</td>
+      </tr>
+      <tr>
+        <td class="date" onclick="selectDate(this)">29</td>
+        <td class="date" onclick="selectDate(this)">30</td>
+        <td class="date" onclick="selectDate(this)">31</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
 
     <div id="timeSelection" class="hidden">
       <h3>Select Time</h3>
