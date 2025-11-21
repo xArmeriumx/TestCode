@@ -283,30 +283,34 @@
       }, 2000);
     };
 
-    // ฟังก์ชันสำหรับเลือกวันที่
     const selectDate = (element) => {
-      document.querySelectorAll('.date').forEach((date) => {
-        date.classList.remove('selected');
-      });
-      element.classList.add('selected');
-      const timeContainer = document.getElementById('timeContainer');
-      timeContainer.innerHTML = '';
+  document.querySelectorAll('.date').forEach((date) => {
+    date.classList.remove('selected');
+  });
+  element.classList.add('selected');
+  const timeContainer = document.getElementById('timeContainer');
+  timeContainer.innerHTML = '';
 
-      const startTimeVal = 10.5; // 10:30 in hours
-      const endTime = 19; // 19:00 in hours
+  const startTimeVal = 10.5; // 10:30
+  const endTime = 19;        // 19:00
 
-      for (let time = startTimeVal; time <= endTime; time += 0.5) {
-        const hour = Math.floor(time);
-        const minute = time % 1 === 0 ? '00' : '30';
-        const timeElement = document.createElement('div');
-        timeElement.className = 'time';
-        timeElement.textContent = `${hour}:${minute}`;
-        timeElement.onclick = () => selectTime(timeElement);
-        timeContainer.appendChild(timeElement);
-      }
+  for (let time = startTimeVal; time <= endTime; time += 0.5) {
+    const hour = Math.floor(time);
+    const minute = time % 1 === 0 ? '00' : '30';
 
-      document.getElementById('timeSelection').classList.remove('hidden');
-    };
+    // แก้จาก div -> button
+    const timeElement = document.createElement('button');
+    timeElement.type = 'button';
+    timeElement.className = 'time';
+    timeElement.textContent = `${hour}:${minute}`;
+    timeElement.addEventListener('click', () => selectTime(timeElement));
+
+    timeContainer.appendChild(timeElement);
+  }
+
+  document.getElementById('timeSelection').classList.remove('hidden');
+};
+
 
     const selectTime = (element) => {
       document.querySelectorAll('.time').forEach((time) => {
@@ -362,6 +366,7 @@
   </script>
 </body>
 </html>
+
 
 
 
